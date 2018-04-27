@@ -8,6 +8,7 @@ const Container = styled('div')`
   white-space: pre;
   overflow-x: hidden;
   transform-origin: 0% 100%;
+  min-width: 100vw;
 `
 
 const tickerAnimation = keyframes`

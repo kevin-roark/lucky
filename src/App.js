@@ -1,8 +1,6 @@
 import React from 'react'
-import Music from './Music'
+import Media from './Media'
 import Ticker, { fontFamilies } from './Ticker'
-
-const audioPath = 'media/lucky.mp3'
 
 const verses = [
   {
@@ -141,10 +139,7 @@ class App extends React.Component {
 
     return (
       <div>
-        <Music
-          audioPath={audioPath}
-          onPlay={this.onMediaPlay}
-        />
+        <Media onPlay={this.onMediaPlay} />
 
         {activeVerses.map((verse, idx) => {
           return (
