@@ -1,55 +1,55 @@
 import React from 'react'
-import { cx } from 'emotion'
 import styled, { keyframes } from 'react-emotion'
 
 const Container = styled('div')`
   position: fixed;
   left: 0;
   padding: 8px;
-  white-space: nowrap;
+  white-space: pre;
   overflow-x: hidden;
-
-  &.vertical {
-    transform: translate(-100vw, 100%) rotate(90deg);
-  }
+  transform-origin: 0% 100%;
 `
 
 const tickerAnimation = keyframes`
   0% {
-    transform: translate3d(0, 0, 0);
-    visibility: visible;
+    transform: translate3d(100vw, 0, 0);
   }
 
   100% {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
   }
 `
 
 const TickerText = styled('div')`
-  font-family: 'Overpass Mono', monospace;
-  font-size: 44px;
-
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   animation-name: ${tickerAnimation};
 `
 
+export const fontFamilies = [
+  "'Work Sans', sans-serif",
+  "'Overpass Mono', monospace",
+  "'MedievalSharp', cursive",
+  "'Times New Roman', serif"
+]
+
 const Ticker = props => {
   const {
     text,
     duration = 10,
-    top = 10,
+    top = 0,
+    fontFamily = fontFamilies[0],
+    fontSize = 44,
     color = '#fff',
     textColor = '#000',
-    vertical = false
+    angle = 0
   } = props
 
-  const className = cx({ vertical })
-
   const style = {
+    top, fontFamily, fontSize,
     backgroundColor: color,
     color: textColor,
-    top
+    transform: `rotate(${angle}deg)`
   }
 
   const textStyle = {
@@ -57,7 +57,7 @@ const Ticker = props => {
   }
 
   return (
-    <Container className={className} style={style}>
+    <Container style={style}>
       <TickerText style={textStyle}>
         {text}
       </TickerText>

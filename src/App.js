@@ -1,6 +1,6 @@
 import React from 'react'
 import Music from './Music'
-import Ticker from './Ticker'
+import Ticker, { fontFamilies } from './Ticker'
 
 const audioPath = 'media/lucky.mp3'
 
@@ -30,7 +30,7 @@ const verses = [
     ]
   },
   {
-    time: 73,
+    time: 74,
     duration: 15,
     color: '#f00',
     textColor: '#fff',
@@ -124,12 +124,15 @@ class App extends React.Component {
   onMediaPlay = () => {
     verses.forEach(verse => {
       const text = verse.lines.join('. ')
-      verse.text = `${text}. ${text}`
+      verse.text = `${text}.`
+      verse.fontFamily = fontFamilies[Math.floor(fontFamilies.length * Math.random())]
+      verse.fontSize = Math.floor(36 + Math.random() * 36)
+      verse.angle = Math.random() * 90
 
       setTimeout(() => {
         const activeVerses = this.state.activeVerses.concat(verse)
         this.setState({ activeVerses })
-      }, verse.time * 1000)
+      }, verse.time * 1000 - 44000)
     })
   }
 
@@ -145,14 +148,7 @@ class App extends React.Component {
 
         {activeVerses.map((verse, idx) => {
           return (
-            <Ticker
-              key={idx}
-              text={verse.text}
-              duration={verse.duration}
-              color={verse.color}
-              textColor={verse.textColor}
-              vertical={Math.random() < 0.5}
-            />
+            <Ticker {...verse} key={idx} />
           )
         })}
       </div>
