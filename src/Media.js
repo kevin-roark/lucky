@@ -12,7 +12,17 @@ const BigVideo = styled('video')`
   z-index: -1;
 `
 
+const QuarterVideo = styled('video')`
+  position: fixed;
+  width: calc(50vw - 30px);
+  top: 50vh;
+  transform: translateY(-50%);
+  z-index: -1;
+`
+
 class Media extends React.Component {
+  videoEls = []
+
   constructor(props) {
     super(props)
 
@@ -24,11 +34,21 @@ class Media extends React.Component {
   setAudioRef = (el) => {
     this.audioEl = el
     this.playIfPossible()
+
+    el.currentTime = this.props.startTime || 0
+
+    el.ontimeupdate = () => {
+      if (this.props.onTimeUpdate) {
+        this.props.onTimeUpdate(el.currentTime)
+      }
+    }
   }
 
   setVideoRef = (el) => {
-    this.videoEl = el
+    this.videoEls.push(el)
     this.playIfPossible()
+
+    el.currentTime = this.props.startTime || 0
   }
 
   onCanPlay = () => {
@@ -37,9 +57,9 @@ class Media extends React.Component {
   }
 
   playIfPossible = () => {
-    if (this.state.canPlayCount === 2 && this.audioEl && this.videoEl) {
+    if (this.state.canPlayCount === 3) {
       this.audioEl.play()
-      this.videoEl.play()
+      this.videoEls.forEach(vid => vid.play())
 
       if (this.props.onPlay) {
         this.props.onPlay()
@@ -54,7 +74,8 @@ class Media extends React.Component {
     return (
       <div>
         <audio src={audioPath} preload="auto" onCanPlay={this.onCanPlay} ref={this.setAudioRef} />
-        <BigVideo src={videoPath} preload="auto" onCanPlay={this.onCanPlay} innerRef={this.setVideoRef} />
+        <QuarterVideo src={videoPath} preload="auto" onCanPlay={this.onCanPlay} innerRef={this.setVideoRef} style={{left: 20 }} />
+        <QuarterVideo src={videoPath} preload="auto" onCanPlay={this.onCanPlay} innerRef={this.setVideoRef} style={{right: 20 }} />
       </div>
     )
   }

@@ -3,12 +3,21 @@ import styled, { keyframes } from 'react-emotion'
 
 const Container = styled('div')`
   position: fixed;
-  left: 0;
-  padding: 8px;
+  right: 0;
+  bottom: 0;
+  margin: 8px;
+  padding: 8px 8px 4px 8px;
   white-space: pre;
-  overflow-x: hidden;
-  transform-origin: 0% 100%;
-  min-width: 100vw;
+  box-shadow: 0 20px 30px rgba(0,0,0,0.14), 0 15px 25px rgba(0,0,0,0.16), 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  background: #000;
+  color: #fff;
+  font-weight: bold;
+
+  & p {
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+  }
 `
 
 const tickerAnimation = keyframes`
@@ -22,45 +31,26 @@ const tickerAnimation = keyframes`
 `
 
 const TickerText = styled('div')`
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  animation-name: ${tickerAnimation};
 `
 
 export const fontFamilies = [
-  "'Work Sans', sans-serif",
-  "'Overpass Mono', monospace",
-  "'MedievalSharp', cursive",
-  "'Times New Roman', serif"
+  "'Inknut Antiqua', serif",
 ]
 
 const Ticker = props => {
   const {
     text,
-    duration = 10,
-    top = 0,
     fontFamily = fontFamilies[0],
-    fontSize = 44,
-    color = '#fff',
-    textColor = '#000',
-    angle = 0
   } = props
 
   const style = {
-    top, fontFamily, fontSize,
-    backgroundColor: color,
-    color: textColor,
-    transform: `rotate(${angle}deg)`
-  }
-
-  const textStyle = {
-    animationDuration: `${duration}s`
+    fontFamily,
   }
 
   return (
     <Container style={style}>
-      <TickerText style={textStyle}>
-        {text}
+      <TickerText>
+        {(props.lines || [props.text]).map((l, i) => <p key={i}>{l}</p>)}
       </TickerText>
     </Container>
   )
